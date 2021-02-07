@@ -36,10 +36,11 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
-	{ "qv2ray",   NULL,       NULL,       0,       1,           -1 },
+	/* class      instance    title       tags mask     iscentered   isfloating   monitor */
+	{ "Gimp",     NULL,       NULL,       0,            0,           1,           -1 },
+	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           0,           -1 },
+	{ "qv2ray",   NULL,       NULL,       0,       	    1,           1,	      -1 },
+	{ "spotify",  NULL,       NULL,       1 << 5,       1,           1,	      -1 },
 };
 
 /* layout(s) */
@@ -74,6 +75,7 @@ static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34
 static const char *chromiumcmd[]  = { "google-chrome-stable", "--proxy-server=127.0.0.1:8889", NULL };
 static const char *qv2ray[] = { "qv2ray", NULL };
 static const char *killQv2ray[] = { "pkill", "qv2ray", NULL };
+static const char *spotify[] = { "spotify", NULL };
 
 
 static Key keys[] = {
@@ -83,6 +85,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_Return,  togglescratch,  {.v = scratchpadcmd } },
 	{ MODKEY,		        XK_v,      spawn,          {.v =qv2ray} },
 	{ MODKEY|ShiftMask,	        XK_v,      spawn,          {.v =killQv2ray} },
+	{ MODKEY,		        XK_n,      spawn,          {.v =spotify} },
         { MODKEY,                       XK_c,      spawn,          {.v = chromiumcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },

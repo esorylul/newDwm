@@ -1,0 +1,5 @@
+dwm
+*.orig
+*.rej
+*.o
+

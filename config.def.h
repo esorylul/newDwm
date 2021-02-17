@@ -16,16 +16,19 @@ static const char *altbarclass      = "Polybar"; /* Alternate bar class name */
 static const char *alttrayname      = "tray";    /* Polybar tray instance name */
 static const char *altbarcmd        = "$HOME/.config/polybar/polybar.sh"; /* Alternate bar launch command */
 static const char *fonts[]          = { "monospace:size=10" };
-static const char dmenufont[]       = "monospace:size=10";
+static const char dmenufont[]       = "monospace:size=15";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
+static const char col_poper[]       = "#733a96";
+static const char col_black[]       = "#191919";
+
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeNorm] = { col_gray3, col_gray1, col_black},
+	[SchemeSel]  = { col_gray4, col_cyan,  col_poper},
 };
 
 /* tagging */
@@ -41,6 +44,8 @@ static const Rule rules[] = {
 	{ "Gimp",     NULL,       NULL,       0,            0,           1,           -1 },
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           0,           -1 },
 	{ "qv2ray",   NULL,       NULL,       0,       	    1,           1,	      -1 },
+	{ "TelegramDesktop",   NULL,       NULL,       0,       	    1,           1,	      -1 },
+	{ "Xfe",   NULL,       NULL,       0,       	    1,           1,	      -1 },
 };
 
 /* layout(s) */
@@ -68,25 +73,36 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-c", "-l", "5", "-m", dmenumon, "-fn", dmenufont, "-nb", col_black, "-nf", col_gray3, "-sb", col_poper, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
 static const char *chromiumcmd[]  = { "google-chrome-stable", "--proxy-server=127.0.0.1:8889", NULL };
 static const char *qv2ray[] = { "qv2ray", NULL };
+static const char *telegram[] = { "telegram-desktop", NULL };
 static const char *killQv2ray[] = { "pkill", "qv2ray", NULL };
+static const char *killTelegram[] = { "pkill", "telegram-deskto", NULL };
 static const char *spotify[] = { "spotify", NULL };
+static const char *flameshot[] = { "flameshot", "gui", NULL };
+static const char *lightDown[] = { "xbacklight", "-dec", "5", NULL };
+static const char *lightUp[] = { "xbacklight", "-inc", "5", NULL };
+
 
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY,            		XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,						XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,             XK_Return,  togglescratch,  {.v = scratchpadcmd } },
-	{ MODKEY,		        XK_v,      spawn,          {.v =qv2ray} },
-	{ MODKEY|ShiftMask,	        XK_v,      spawn,          {.v =killQv2ray} },
-	{ MODKEY,		        XK_n,      spawn,          {.v =spotify} },
-        { MODKEY,                       XK_c,      spawn,          {.v = chromiumcmd } },
+	{ MODKEY,						XK_v,      spawn,          {.v =qv2ray} },
+	{ MODKEY|ShiftMask,				XK_v,      spawn,          {.v =killQv2ray} },
+	{ MODKEY,						XK_w,      spawn,          {.v =telegram } },
+	{ MODKEY|ShiftMask,				XK_w,      spawn,          {.v =killTelegram} },
+	{ MODKEY,						XK_n,      spawn,          {.v =spotify} },
+    { MODKEY,                       XK_c,      spawn,          {.v = chromiumcmd } },
+    { MODKEY|ShiftMask,             XK_a,      spawn,          {.v = flameshot } },
+    { MODKEY,			            XK_equal,      spawn,          {.v = lightUp } },
+    { MODKEY,						XK_minus,      spawn,          {.v = lightDown } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
